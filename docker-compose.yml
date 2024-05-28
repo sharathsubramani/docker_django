@@ -1,0 +1,51 @@
+# docker version
+version: '3'
+
+# docker services
+services:
+  db:
+    image: postgres
+    container_name: pg_container
+    environment:
+      - POSTGRES_DB=backend_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_HOST=localhost
+    restart: always
+    volumes:
+      - ./db-data:/var/lib/postgressql/data
+
+  web:
+    image: docker_django_web
+    container_name: web_container
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+    command: python3 manage.py runserver 0.0.0.0:8000
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  pgadmin4:
+    image: dpage/pgadmin4
+    container_name: pgadmin_container
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=sharathsubramani02@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=postgres
+      # - PGADMIN_LISTEN_PORT=5050
+      # - PGADMIN_CONFIG_WTF_CSRF_CHECK_DEFAULT:'False'
+      # - PGADMIN_CONFIG_WTF_CSRF_ENABLED:'False'
+    ports:
+      - 5050:80
+    depends_on:
+      - db
+
+volumes:
+  db-data:
+
+
