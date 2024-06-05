@@ -28,8 +28,20 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
+
+
+
+AWS_ACCESS_KEY_ID = 'AKIAQ3EGS5H4JBFLJYMW'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'backend-system'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_LOCATION = 'static'
+
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -44,12 +56,27 @@ INSTALLED_APPS = [
     'djoser',
     'drf_api_logger',
     'rest_framework.authtoken',
-
+    'boto3',
+    'storages',
 
     # installed apps
     'authuser',
+    'user_profile',
 
 ]
+
+# DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
+
+# STATICFILES_STORAGE = "storages.backends.s3.S3Storage"
+
+# STORAGES = {
+#     "default": {
+#         "BACKEND": "storages.backends.s3.S3Storage",
+#     },
+#     "staticfiles": {
+#         "BACKEND": "storages.backends.s3.S3Storage",
+#     },
+# }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

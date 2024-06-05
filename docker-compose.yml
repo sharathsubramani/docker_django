@@ -25,6 +25,10 @@ services:
     ports:
       - 8000:8000
     command: python3 manage.py runserver 0.0.0.0:8000
+    environment:
+      - AWS_ACCESS_KEY_ID=AKIAQ3EGS5H4JBFLJYMW
+      - AWS_SECRET_ACCESS_KEY=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
+      - AWS_DEFAULT_REGION=ap-south-1
     env_file:
       - .env
     depends_on:
