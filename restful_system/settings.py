@@ -12,9 +12,28 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from os import environ
+import os
+import logging
+# from boto3.session import Session as botosession
+from library import boto3 as boto3
+from library import watchtower as watchtower
+# import watchtower, logging
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+LOG_PATH = os.path.join(BASE_DIR, 'log')
+
+
+# logging.basicConfig(level=logging.INFO)
+# logger = logging.getLogger(__name__)
+# logger.addHandler(watchtower.CloudWatchLogHandler())
+# logger.info("Hi")
+# logger.info(dict(foo="bar", details={}))
+
+# logging.basicConfig(level=logging.DEBUG)
+# logger = logging.getLogger()
+# logger.addHandler(watchtower.CloudWatchLogHandler())
 
 
 # Quick-start development settings - unsuitable for production
@@ -31,7 +50,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 
-
 AWS_ACCESS_KEY_ID = 'AKIAQ3EGS5H4JBFLJYMW'
 AWS_SECRET_ACCESS_KEY = '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'
 AWS_STORAGE_BUCKET_NAME = 'backend-system'
@@ -40,6 +58,78 @@ AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
 AWS_LOCATION = 'static'
+
+
+# boto3_logs_client = boto3.client("logs", region_name='ap-south-1')
+
+# cloudwatch logs
+CLOUDWATCH_AWS_ID = environ.get('AWS_SECRET_ACCESS')
+CLOUDWATCH_AWS_KEY = environ.get('AWS_ACCESS_KEY_ID')
+AWS_DEFAULT_REGION = 'ap-south-1'  # Be sure to update with your AWS region
+# boto3_logs_client = boto3.Session(
+#     aws_access_key_id=CLOUDWATCH_AWS_ID,
+#     aws_secret_access_key=CLOUDWATCH_AWS_KEY,
+#     region_name=AWS_DEFAULT_REGION,
+# )
+
+# boto3_logs_client_new = boto3.client("logs", region_name=AWS_DEFAULT_REGION)
+
+client = boto3.client('cloudwatch')
+
+
+# import watchtower, logging
+# logging.basicConfig(level=logging.INFO)
+# logger = logging.getLogger(__name__)
+# logger.addHandler(watchtower.CloudWatchLogHandler())
+# logger.info("Hi")
+# logger.info(dict(foo="bar", details={}))
+
+# LOGGING = {
+#     'version': 1,
+#     'formatters': {
+#         'verbose': {
+#             'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+#         },
+#         'simple': {
+#             'format': '%(levelname)s %(message)s'
+#         },
+#     },
+#     'handlers': {
+#         'watchtower':  {
+#             'level': 'INFO',  # Or some more appropriate level
+#             'class': 'watchtower.CloudWatchLogHandler',
+#         },
+#         'console': {
+#             'level': 'INFO',
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['watchtower','console'],
+#             'level': 'DEBUG',  # Or some more appropriate level
+#             'propagate': True,
+#         },
+#          'django.user': {
+#             'handlers': ['watchtower'],
+#             'level': 'DEBUG',
+#             'propagate': False,
+#         },
+#         'django.partner': {
+#             'handlers': ['watchtower'],
+#             'level': 'DEBUG',
+#             'propagate': False,
+#         },
+#         'watchtower':  {
+#             'level': 'INFO',  # Or some more appropriate level
+#             'class': 'watchtower.CloudWatchLogHandler',
+#         },
+#         'console': {
+#             'level': 'INFO',
+#             'class': 'logging.StreamHandler',
+#         },
+#     }
+# }
 
 
 
@@ -58,6 +148,9 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'boto3',
     'storages',
+    'watchtower',
+    # 'cloudwatch',
+    # 'watchtower',
 
     # installed apps
     'authuser',
@@ -96,7 +189,7 @@ ROOT_URLCONF = 'restful_system.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR/'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

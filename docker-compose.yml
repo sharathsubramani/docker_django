@@ -22,17 +22,26 @@ services:
     build: .
     volumes:
       - .:/app
+      - /home/user/.aws:/root/.aws
     ports:
       - 8000:8000
     command: python3 manage.py runserver 0.0.0.0:8000
     environment:
       - AWS_ACCESS_KEY_ID=AKIAQ3EGS5H4JBFLJYMW
       - AWS_SECRET_ACCESS_KEY=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
-      - AWS_DEFAULT_REGION=ap-south-1
+      - AWS_DEFAULT_REGION=ap-south-1 
     env_file:
       - .env
     depends_on:
       - db
+    # logging:
+    #   driver: "awslogs"
+    #   options:
+    #     awslogs-region: "ap-south-1"
+    #     awslogs-group: "your-log-group"
+    #     awslogs-stream: "your-log-stream"
+  
+
 
   pgadmin4:
     image: dpage/pgadmin4
@@ -49,7 +58,20 @@ services:
     depends_on:
       - db
 
+  jenkins:
+    image: jenkins/jenkins
+    ports:
+      - 8081:8080
+    depends_on:
+      - db
+
+
 volumes:
   db-data:
+
+
+
+# jenkins password
+# 0b51d4f7ac9944d59c33d44964b35489
 
 

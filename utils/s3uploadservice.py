@@ -4,23 +4,26 @@ import requests
 from os import environ
 
 
-def upload_file_to_s3_bucket(customer_id,filename,file):
-    resource_id =environ.get('AWS_API_RESOURCE_ID')
+def upload_file_to_s3_bucket(customer_id, filename, file):
+    resource_id = environ.get('AWS_API_RESOURCE_ID')
     region = environ.get("AWS_REGION")
     api_env = environ.get("AWS_ENVIRONMENT")
-    bucket= environ.get("AWS_BUCKET")
-    print(resource_id,'resource_id')
+    bucket = environ.get("AWS_BUCKET")
+    print(resource_id, 'resource_id')
     aws_api_url = 'https://2sdqnvrfi7.execute-api.ap-south-1.amazonaws.com/develop/v1/upload_file'
-    params = {"cust_id":customer_id,"filename":filename}
-    headers = {"Content-Type":"application/pdf"}
+    params = {"cust_id": customer_id, "filename": filename}
+    headers = {"Content-Type": "application/pdf"}
     print(aws_api_url)
 
-    response = requests.post(aws_api_url,file,params=params,headers=headers)
+    response = requests.post(aws_api_url, file, params=params, headers=headers)
     # print(response.status_code,'status code')
     # print(response.headers,'headers')
     # print(response.content,'body')
-    print('response',response)
+    print('response', response)
     return response
+
+
+
 
 
 # REGION = 'ap-south-1'
